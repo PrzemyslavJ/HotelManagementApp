@@ -1,0 +1,173 @@
+﻿@model HotelManagementApp.Models.RoomRentOrReservation
+@{
+    ViewBag.Title = "Rezerwacja/wynajęcie pokoju";
+    HtmlHelper.ClientValidationEnabled = true;
+    HtmlHelper.UnobtrusiveJavaScriptEnabled = true;
+}
+<script src="@Url.Content("~/Scripts/jquery-3.4.1.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<body>
+    <div class="text-center">
+        <h3>
+            <b>Id pokoju: </b>   @ViewBag.Id_HotelRoom <br />
+
+            @if (ViewBag.TypeOfTrans == (int)HotelManagementApp.Models.TypeOfTrans.Reservation)
+            {
+                <b>Rezerwujesz pokój </b>
+            }
+            else if (ViewBag.TypeOfTrans == (int)HotelManagementApp.Models.TypeOfTrans.Rent)
+            {
+                <b>Wynajmujesz pokój</b>
+            }
+        </h3>
+    </div>
+    @using (Html.BeginForm("RentOrReserveRoom", "Home", method: FormMethod.Post))
+    {
+        <input type="hidden" name="Id_HotelRoom" value="@ViewBag.Id_HotelRoom" />
+        <input type="hidden" name="Id_TypeOfTrans" value="@ViewBag.TypeOfTrans" />
+
+        <div class="form-group">
+            <label for="FromDateTime">Data początowa: </label>
+            <input type="datetime-local" class="form-control" name="FromDateTime" required /> <br />
+        </div>
+        <div class="form-group">
+            <label for="ToDateTime">Data końcowa: </label>
+            <input type="datetime-local" class="form-control" name="ToDateTime" required /> <br />
+        </div>
+        <div class="form-group">
+            <label for="CostOfReservation">Wprowadzona kwota przez klienta: </label>
+            @Html.EditorFor(m => m.CostOfOperation) <br />
+            @Html.ValidationMessageFor(m => m.CostOfOperation, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <label for="Comment">Komentarz do operacji: </label>
+            @Html.EditorFor(m => m.Comment)
+        </div>
+        <br />
+        <div class="container">
+            <h5>Dane głównego klienta </h5>
+            <div class="form-group">
+                <label for="Comment">Nr dowodu osobistego: </label>
+                @Html.EditorFor(m => m.PersonalNum)
+                @Html.ValidationMessageFor(m => m.PersonalNum, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label for="Comment">Nazwisko: </label>
+                @Html.EditorFor(m => m.Surname)
+                @Html.ValidationMessageFor(m => m.Surname, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label for="Comment">Imię: </label>
+                @Html.EditorFor(m => m.Name)
+                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label for="Comment">Miasto: </label>
+                @Html.EditorFor(m => m.City)
+                @Html.ValidationMessageFor(m => m.City, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label for="Comment">Kod pocztowy: </label>
+                @Html.EditorFor(m => m.PostalCode)
+                @Html.ValidationMessageFor(m => m.PostalCode, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label for="Comment">Ulica: </label>
+                @Html.EditorFor(m => m.Street)
+                @Html.ValidationMessageFor(m => m.Street, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label for="Comment">Nr Budynku: </label>
+                @Html.EditorFor(m => m.BuildingNumber)
+                @Html.ValidationMessageFor(m => m.BuildingNumber, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label for="Comment">Nr mieszkania: </label>
+                @Html.EditorFor(m => m.FlatNumber)
+                @Html.ValidationMessageFor(m => m.FlatNumber, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label for="Comment">Telefon: </label>
+                @Html.EditorFor(m => m.Telephone)
+                @Html.ValidationMessageFor(m => m.Telephone, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label for="Comment">Email: </label>
+                @Html.EditorFor(m => m.Email)
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group" id="OverWriteClient" style="visibility:hidden;">
+                <label for="OverWriteClientData">Klient już jest zarejestrowany w systemie. Czy zaktualizować jego dane ? </label>
+                <input type="checkbox" name="OverWriteClientData" id="OverWriteClientData" value="false">
+            </div>
+        </div>
+
+        <div class="text-center">
+            <div class="col-md-offset-2 col-md-10">
+                <input id="submit" type="submit" value="Wykonaj operację" class="btn btn-default" />
+            </div>
+        </div>
+    }
+</body>
+
+@if (ViewBag.ErrorCommunicate != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.ErrorCommunicate");
+            };
+    </script>
+}
+
+<script>
+
+    $(function () {
+        $("#PersonalNum").change(function () {
+            $.ajax({
+                type: "GET",
+                url: "/Home/GetSelectClientData",
+                contentType: "application/json; charset=utf-8",
+                data: { jsonInputPersonalNumber: JSON.stringify($("#PersonalNum").val()) },
+                dataType: "json",
+                success: function (response) {
+                    if (response != null) {
+                        $('#Surname').val(response.Surname);
+                        $('#Name').val(response.Name);
+                        $('#City').val(response.City);
+                        $('#PostalCode').val(response.PostalCode);
+                        $('#Street').val(response.Street);
+                        $('#City').val(response.City);
+                        $('#BuildingNumber').val(response.BuildingNumber);
+                        $('#FlatNumber').val(response.FlatNumber);
+                        $('#Telephone').val(response.Telephone);
+                        $('#Email').val(response.Email);
+
+                        if ( $('#Surname').val()!= '') {
+                            $('#OverWriteClient').css("visibility", "visible");
+                        }
+                        else {
+                            $('#OverWriteClient').css("visibility", "hidden");
+                        }
+                    }
+                }
+            });
+        });
+    
+
+        $("#OverWriteClientData").on('change', function () {
+            if ($(this).is(':checked')) {
+                $(this).attr('value', 'true');
+            } else {
+                $(this).attr('value', 'false');
+            }
+        });
+
+    });
+</script>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    
+}

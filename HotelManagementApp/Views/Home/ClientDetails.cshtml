@@ -1,0 +1,70 @@
+﻿@model dynamic
+@{
+    ViewBag.Title = "Dane klienta";
+}
+
+
+<div class="text-center">
+    <h2>Klient @Model.ClientDetails.Name  @Model.ClientDetails.Surname </h2>
+
+    <ul class="list-group">
+        <li class="list-group-item">ID klienta: @Model.ClientDetails.Id_Client </li>
+        <li class="list-group-item">Nr dowodu osobistego / paszportu: @Model.ClientDetails.PersonalNum </li>
+        <li class="list-group-item">Miejsce zamieszkania:  @Model.ClientDetails.City </li>
+        <li class="list-group-item">Kod pocztowy: @Model.ClientDetails.PostalCode </li>
+        <li class="list-group-item">Ulica: @Model.ClientDetails.Street </li>
+        <li class="list-group-item">Nr budynku: @Model.ClientDetails.BuildingNumber </li>
+        <li class="list-group-item">Nr mieszkania: @Model.ClientDetails.FlatNumber </li>
+        <li class="list-group-item">Telefon: @Model.ClientDetails.Telephone </li>
+        <li class="list-group-item">Email: @Model.ClientDetails.Email </li>
+    </ul>
+    <br/>
+    <h2>Transakcje klienta</h2>
+</div>
+
+<div>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id transakcji </th>
+            <th>Typ transakcji </th>
+            <th>Zarejestrowana kwota </th>
+            <th>Opis</th>
+            <th>Okres od</th>
+            <th>Okres do </th>
+            <th>Pracownik rejestrujący </th>
+            <th>status </th>
+            <th>Data rejestracji </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Transactions i in Model.ClientTransactions)
+        {
+        <tr>
+            <td>@i.Id_Trans</td>
+            <td>@i.Id_TypeTrans</td>
+            <td>@i.Cost</td>
+            <td>@i.Description</td>
+            <td>@i.FromTime</td>
+            <td>@i.ToTime</td>
+            <td>@i.Id_LoggingUser</td>
+            @if (i.IsActive == true)
+            {
+                <td> aktywny </td>
+            }
+            else if (i.IsActive == false)
+            {
+                <td> nieaktywny </td>
+            }
+            else
+            {
+                <td>-</td>
+            }
+            <td>@i.CreatedRecordDateTime</td>
+
+        </tr>
+        }
+    </tbody>
+</table>
+</div>
+

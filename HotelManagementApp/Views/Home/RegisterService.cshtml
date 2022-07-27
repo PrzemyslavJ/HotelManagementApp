@@ -1,0 +1,58 @@
+﻿@Model
+@{
+    ViewBag.Title = "Rejestr usługi / operacji";
+}
+
+
+
+<div class="container">
+
+    @using (Html.BeginForm("RegisterService", "Home", method: FormMethod.Post))
+    {
+    <h2> Rejestrujesz usługę dla pokoju o nr: @ViewBag.Id_HotelRoom </h2>
+
+        <input type="hidden" name="Id_HotelRoom" value="@ViewBag.Id_HotelRoom" />
+
+        <div class="form-group">  
+            @Html.DropDownList("Id_TypeTrans", (SelectList)ViewBag.OperationsToList, "Wybierz rodzaj operacji")
+        </div>
+        <div class="form-group">
+            <label for="StartTime">Data początowa: </label>
+            <input type="datetime-local" class="form-control" name="StartTime" required /> <br />
+        </div>
+        <div class="form-group">
+            <label for="ToTime">Data końcowa: </label>
+            <input type="datetime-local" class="form-control" name="EndTime" required /> <br />
+        </div>
+        <div class="form-group">
+            <label for="Cost">Koszt operacji (jeżeli jest): </label>
+            <input type="text" class="form-control" name="Cost" value="0" />
+        </div>
+        <div class="form-group">
+            <label for="Comment">Komentarz: </label>
+            <input type="text" class="form-control" name="Comment" required />
+        </div>
+        <div class="text-center">
+            <div class="col-md-offset-2 col-md-10">
+                <input id="submit" type="submit" value="Wykonaj operację" class="btn btn-default" />
+            </div>
+        </div>
+    }
+
+</div>
+@if (ViewBag.ErrorCommunicate != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.ErrorCommunicate");
+            };
+    </script>
+}
+
+
+
+
+
+
+
+

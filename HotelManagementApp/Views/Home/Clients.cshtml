@@ -1,0 +1,48 @@
+﻿@model IEnumerable<HotelManagementApp.Clients>
+@{
+    ViewBag.Title = "Klienci";
+}
+
+<div class="text-center">
+
+    <h2>Dane klientów </h2>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id Klienta </th>
+                <th>Nr osobisty </th>
+                <th>Nazwisko </th>
+                <th>Imie </th>
+                <th>Miasto </th>
+                <th>Kod pocztowy </th>
+                <th>Ulica</th>
+                <th>Nr budynku </th>
+                <th>Nr mieszkania </th>
+                <th>Telefon </th>
+                <th>E-mail </th>
+                <th> - </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var i in Model)
+            {
+            <tr>
+                <td>@i.Id_Client</td>
+                <td>@i.PersonalNum</td>
+                <td>@i.Surname</td>
+                <td>@i.Name</td>
+                <td>@i.City</td>
+                <td>@i.PostalCode</td>
+                <td>@i.Street</td>
+                <td>@i.BuildingNumber</td>
+                <td>@i.FlatNumber</td>
+                <td>@i.Telephone</td>
+                <td>@i.Email</td>
+                <td>@Html.ActionLink("Wyświetl transakcje", "ClientDetails", "Home", new { IdClient = @i.Id_Client }, null) </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

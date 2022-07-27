@@ -1,0 +1,48 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
+
+namespace HotelManagementApp.Models
+{
+    public class RoomCreateModel
+    {
+        public Nullable<int> NumberInUserHotel { get; set; }
+
+        [Required]
+        public string NameOfRoom { get; set; }
+
+        [Display(Name = "Kwota")]
+        [Range(0, 10000, ErrorMessage = "Kwota nie może być mniejsza od 0")]
+        public double CostOfRent { get; set; }
+        public string OverallDescription { get; set; }
+        public string OverallDescriptionAdditional { get; set; }
+        public Nullable<double> RoomSurface { get; set; }
+        public Nullable<int> Floor { get; set; }
+        public Nullable<bool> WithBadroom { get; set; }
+        public Nullable<int> QtyOfPersonsInRoom { get; set; }
+
+
+        public static void CreateNewRoom (RoomCreateModel roomCreateModel,int userHotel)
+        {
+            HotelManagementDbContext hotelManagementDbEntities = new HotelManagementDbContext();
+            HotelRooms newHotelRoom = new HotelRooms()
+            {
+                Id_UserHotel = userHotel,
+                NumberInUserHotel = roomCreateModel.NumberInUserHotel,
+                NameOfRoom = roomCreateModel.NameOfRoom,
+                Id_Condition = (int)ConditionOFHotelRooms.Available,
+                CostOfRent = roomCreateModel.CostOfRent,
+                OverallDescription = roomCreateModel.OverallDescription,
+                OverallDescriptionAdditional = roomCreateModel.OverallDescriptionAdditional,
+                RoomSurface = roomCreateModel.RoomSurface,
+                Floor = roomCreateModel.Floor,
+                WithBadroom = roomCreateModel.WithBadroom,
+                QtyOfPersonsInRoom = roomCreateModel.QtyOfPersonsInRoom
+            };
+            hotelManagementDbEntities.HotelRooms.Add(newHotelRoom);
+            hotelManagementDbEntities.SaveChanges();
+        }
+    }
+}

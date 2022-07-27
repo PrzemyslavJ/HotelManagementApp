@@ -1,0 +1,51 @@
+﻿@model IEnumerable<HotelManagementApp.LoggingUsers>
+@{
+    ViewBag.Title = "Uzytkownicy logujący hotelu";
+}
+<div class="text-center">
+
+    <h2>Dane użytkowników logujących hotelu: @ViewBag.HotelName </h2>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id Użytkownika </th>
+                <th>Nazwisko </th>
+                <th>Imie </th>
+                <th>Miasto </th>
+                <th>Kod pocztowy </th>
+                <th>Ulica</th>
+                <th>Nr budynku </th>
+                <th>Nr mieszkania </th>
+                <th>Telefon </th>
+                <th>E-mail firmowy </th>
+                <th> Początek pracy </th>
+                <th> Koniec pracy </th>
+                <th> Rodzaj zatrudnienia </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var i in Model)
+            {
+                <tr>
+                    <td>@i.Id_UserHotel</td>
+                    <td>@i.Surname</td>
+                    <td>@i.Name</td>
+                    <td>@i.City</td>
+                    <td>@i.PostalCode</td>
+                    <td>@i.Street</td>
+                    <td>@i.BuildingNumber</td>
+                    <td>@i.FlatNumber</td>
+                    <td>@i.Telephone</td>
+                    <td>@i.BusinessEmail</td>
+                    <td>@i.StartOfWork</td>
+                    <td>@i.EndOfWork</td>
+                    <td>@i.TypeOfEmployment</td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+

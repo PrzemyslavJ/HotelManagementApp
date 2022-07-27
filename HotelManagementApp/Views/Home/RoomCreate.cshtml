@@ -1,0 +1,67 @@
+﻿@model HotelManagementApp.Models.RoomCreateModel
+@{
+    ViewBag.Title = "Dodaj nowy pokój do hotelu";
+    HtmlHelper.ClientValidationEnabled = true;
+    HtmlHelper.UnobtrusiveJavaScriptEnabled = true;
+}
+
+<h2> Dodaj nowy pokój do hotelu </h2>
+
+<div style="color:red">
+    @ViewBag.ErrorCommunicate
+</div>
+
+
+@using (Html.BeginForm("RoomCreate", "Home", method: FormMethod.Post))
+{
+<div class="container">
+    <div class="form-group">
+        <label for="Comment">Nazwa pokoju: </label>
+        @Html.EditorFor(m => m.NameOfRoom)
+        @Html.ValidationMessageFor(m => m.NameOfRoom, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label for="Comment">ilu-osobowy pokój: </label>
+        @Html.EditorFor(m => m.QtyOfPersonsInRoom)
+        @Html.ValidationMessageFor(m => m.QtyOfPersonsInRoom, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label for="Comment">Numer hotelowy: </label>
+        @Html.EditorFor(m => m.NumberInUserHotel)
+        @Html.ValidationMessageFor(m => m.NumberInUserHotel, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label for="Comment">Koszt wynajęcia na osobę: </label>
+        @Html.EditorFor(m => m.CostOfRent)
+        @Html.ValidationMessageFor(m => m.CostOfRent, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label for="Comment">Opis ogólny: </label>
+        @Html.EditorFor(m => m.OverallDescription)
+        @Html.ValidationMessageFor(m => m.OverallDescription, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label for="Comment">Opis dodatkowy: </label>
+        @Html.EditorFor(m => m.OverallDescriptionAdditional)
+        @Html.ValidationMessageFor(m => m.OverallDescriptionAdditional, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label for="Comment">Powierzchnia pokoju: </label>
+        @Html.EditorFor(m => m.RoomSurface)
+        @Html.ValidationMessageFor(m => m.RoomSurface, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label for="Comment">Piętro: </label>
+        @Html.EditorFor(m => m.Floor)
+        @Html.ValidationMessageFor(m => m.Floor, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label for="Comment">Czy pokój posiada łazienkę ?: </label>
+        @Html.EditorFor(m => m.WithBadroom)
+        @Html.ValidationMessageFor(m => m.WithBadroom, "", new { @class = "text-danger" })
+    </div>
+    <div class="col-md-offset-2 col-md-10">
+        <input id="submit" type="submit" value="Zarejestruj nowy pokój" class="btn btn-default" />
+    </div>
+</div>
+}

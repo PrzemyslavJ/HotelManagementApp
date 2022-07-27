@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewBag.Title = "Potwierdzenie";
+}
+<div class="text-center">
+    <h3>
+        @ViewBag.ConfirmCommunicate
+    </h3>
+    <br>
+    @{ switch (ViewBag.Controllermethod)
+        {
+            case "ChangeRoomAvailabilityConfirm":
+
+            using (Html.BeginForm("ChangeRoomAvailability", "Home", method: FormMethod.Post))
+            {
+                <input type="hidden" name="idRoom" value="@ViewBag.IdRoom" />
+                <input type="hidden" name="statusChangeUp" value="@ViewBag.StatusChangeUp.ToString()" />
+
+                <div class="text-center">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input id="submit" type="submit" value="Potwierdzam" class="btn btn-secondary btn-lg" />
+                    </div>
+                </div>
+            }
+            break;
+            case "CancellingRentOrReservationConfirm":
+
+            using (Html.BeginForm("CancellingRentOrReservation", "Home", method: FormMethod.Post))
+            {
+                <input type="hidden" name="IdTrans" value="@ViewBag.IdTrans" />
+
+                <p> @ViewBag.TypeTrans pokoju: @ViewBag.RoomName  </p>
+                <p>w okresie od: @ViewBag.FromTime  do: @ViewBag.ToTime  </p>
+
+                <div class="text-center">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input id="submit" type="submit" value="Potwierdzam" class="btn btn-secondary btn-lg" />
+                    </div>
+                </div>
+            }
+            break;
+    }
+    <br>
+    <br>
+    }
+
+    @Html.ActionLink("Powrót na stronę główną", "Index", "Home", null)
+
+</div>
+
+
+

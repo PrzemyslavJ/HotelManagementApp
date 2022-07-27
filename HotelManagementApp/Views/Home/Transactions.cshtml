@@ -1,0 +1,104 @@
+﻿@model IEnumerable<HotelManagementApp.Models.TransUserViewModel>
+@{
+    ViewBag.Title = "Transakcje";
+}
+
+<div class="text-center">
+
+    <h2>Transakcje</h2>
+
+    <p></p>
+    <div class="container">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Wyświetl określone transakcje 
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                @foreach (var i in ViewBag.AllTypesTransToSelect)
+                {
+                <a class="dropdown-item" href="@Url.Action("AllTransactions", new { typeOfTrans = @i.Id_TypeTrans})">@i.Description</a> <br />
+                }
+                <a class="dropdown-item" href="@Url.Action("AllTransactions")">Wszystkie transakcje</a>
+            </div>
+        </div>
+    </div>
+
+    @if (@ViewBag.TypeTransDescription != null)
+    {
+        <h3>Transakcje o typie: @ViewBag.TypeTransDescription </h3>
+    }
+
+<div class="container">
+    <h3> Wyświetl transakcje w okresie czasu </h3>
+    @using (Html.BeginForm("TransactionsInPeriod", "Home", method: FormMethod.Get))
+    {
+        <div class="form-group">
+            <label for="startTime">Data początkowa </label>
+            <input type="datetime-local" class="form-control" name="startTime" required />
+        </div>
+        <div class="form-group">
+            <label for="endTime">Data końcowa </label>
+            <input type="datetime-local" class="form-control" name="endTime" required />
+        </div>
+        <div class="form-group">
+            <label for="typeOfTrans">Wyświetl określone transakcje w przedziale czasu </label>
+            <select id="typeOfTrans" name="typeOfTrans">
+                @foreach (var i in ViewBag.AllTypesTransToSelect)
+                {
+                    <option value="@i.Id_TypeTrans"> @i.Description </option>
+                }
+                <option value="">Wszystkie transakcje w okresie </option>
+            </select>
+        </div>
+        <input type="submit" value="Wyświetl" />
+    }
+</div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id transakcji </th>
+                <th>Typ transakcji </th>
+                <th>Zarejestrowana kwota </th>
+                <th>Opis</th>
+                <th>Okres od</th>
+                <th>Okres do </th>
+                <th>Pracownik rejestrujący </th>
+                <th>Data rejestracji </th>
+                <th>Status </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var i in Model)
+            {
+            <tr>
+                <td>@i.Id_Trans</td>
+                <td>@i.TypeTransDesc</td>
+                <td>@i.Cost</td>
+                <td>@i.TransDesc</td>
+                <td>@i.FromTime</td>
+                <td>@i.ToTime</td>
+                <td>@i.SurnameLoggingUser</td>
+                <td>@i.CreatedRecordDateTime</td>
+                @if (i.IsActive == true)
+                {
+                    <td> aktywny </td>
+                }
+                else if (i.IsActive == false)
+                {
+                    <td> nieaktywny </td>
+                }
+                else
+                {
+                    <td>-</td>
+                }
+            </tr>
+            }
+        </tbody>
+    </table>
+
+    <p>Przychód w okresie: @ViewBag.Revenue , Rozchód w okresie: @ViewBag.Issue </p>
+
+</div>
+
