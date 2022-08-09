@@ -4,16 +4,16 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="333681270d3b4cfab5dc2b8c774739e1" Name="Diagram1">
-        <EntityTypeShape EntityType="HotelManagementDbModel.Clients" Width="1.5" PointX="6" PointY="10.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="HotelManagementDbModel.ConditionsOfHotelRooms" Width="1.5" PointX="0.75" PointY="5.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="HotelManagementDbModel.HotelRooms" Width="1.5" PointX="3" PointY="4.25" IsExpanded="true" />
+      <Diagram DiagramId="333681270d3b4cfab5dc2b8c774739e1" Name="Diagram1" ZoomLevel="74">
+        <EntityTypeShape EntityType="HotelManagementDbModel.Clients" Width="1.5" PointX="7.375" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="HotelManagementDbModel.ConditionsOfHotelRooms" Width="1.5" PointX="1.5" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="HotelManagementDbModel.HotelRooms" Width="1.5" PointX="3.375" PointY="3.125" IsExpanded="true" />
         <EntityTypeShape EntityType="HotelManagementDbModel.HotelRoomsFeatures" Width="1.5" PointX="5.25" PointY="5.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="HotelManagementDbModel.Hotels" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="HotelManagementDbModel.LoggingUsers" Width="1.5" PointX="6" PointY="14.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="HotelManagementDbModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="9.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="HotelManagementDbModel.Transactions" Width="1.5" PointX="8.25" PointY="4.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="HotelManagementDbModel.TypesTrans" Width="1.5" PointX="6" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="HotelManagementDbModel.Hotels" Width="1.5" PointX="1.5" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="HotelManagementDbModel.LoggingUsers" Width="1.5" PointX="7.375" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="HotelManagementDbModel.sysdiagrams" Width="1.5" PointX="1.5" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="HotelManagementDbModel.Transactions" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="HotelManagementDbModel.TypesTrans" Width="1.5" PointX="3.375" PointY="1.125" IsExpanded="true" />
         <AssociationConnector Association="HotelManagementDbModel.FK_Transactions_Clients" ManuallyRouted="false" />
         <AssociationConnector Association="HotelManagementDbModel.FK_HotelRooms_ConditionsOfHotelRooms" ManuallyRouted="false" />
         <AssociationConnector Association="HotelManagementDbModel.FK_HotelRooms_Hotels" ManuallyRouted="false" />

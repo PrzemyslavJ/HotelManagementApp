@@ -17,7 +17,10 @@ namespace HotelManagementApp.Models
         RoomRenovation,
         AddingEquipment,
         RepairEquipment,
-        AddingFeatureRoom
+        AddingNewRoom,
+        DeliveryFoodOrDrinksToCustomer,
+        UseOfSaunaByClient,
+        UseOfPoolByClient
     }
 
     public enum ConditionOFHotelRooms

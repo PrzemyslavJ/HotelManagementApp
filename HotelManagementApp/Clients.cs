@@ -11,8 +11,7 @@ namespace HotelManagementApp
 {
     using System;
     using System.Collections.Generic;
-    using System.Configuration;
-
+    
     public partial class Clients
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -35,6 +34,5 @@ namespace HotelManagementApp
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Transactions> Transactions { get; set; }
-
     }
 }

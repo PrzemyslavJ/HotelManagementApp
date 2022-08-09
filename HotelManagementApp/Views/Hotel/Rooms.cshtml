@@ -4,41 +4,42 @@
 }
 
 <body>
-    <p></p>
+   <br/>
+<div class="text-center">
     <div class="container">
         <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 Wyświetl pokoje (stan obecny)
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="@Url.Action("Rooms")">Wszystkie pokoje</a>
                 <a class="dropdown-item" href="@Url.Action("Rooms", new { conditionOfRoom = 2})">Wolne pokoje</a> <br />
                 <a class="dropdown-item" href="@Url.Action("Rooms", new { conditionOfRoom = 3})">Zarezerwowane pokoje</a> <br />
                 <a class="dropdown-item" href="@Url.Action("Rooms", new { conditionOfRoom = 4})">Wynajęte pokoje</a> <br />
                 <a class="dropdown-item" href="@Url.Action("Rooms", new { conditionOfRoom = 1})">Niedostępne pokoje</a> <br />
-                <a class="dropdown-item" href="@Url.Action("Rooms")">Wszystkie pokoje</a>
             </div>
         </div>
     </div>
 
     <div class="container">
         <h3> Wyświetl stan pokojów na dany dzień </h3>
-        @using (Html.BeginForm("RoomsForDay", "Home", method: FormMethod.Get))
+        @using (Html.BeginForm("RoomsForDay", "Hotel", method: FormMethod.Get))
         {
             <div class="form-group">
                 <label for="dateTimeToReaearch">Data </label>
-                <input type="datetime-local" class="form-control" name="dateTimeToReaearch" required />
+                <input type="datetime-local" name="dateTimeToReaearch" required />
             </div>
             <div class="form-group">
                 <label for="conditionOfRoom">Stan pokojów:</label>
                 <select id="conditionOfRoom" name="conditionOfRoom">
+                    <option value="">Wszystkie pokoje</option>
                     <option value="2">Wolne pokoje</option>
                     <option value="3">Zarezerwowane pokoje</option>
                     <option value="4">Wynajęte pokoje</option>
                     <option value="1">Niedostępne pokoje</option>
-                    <option value="">Wszystkie pokoje</option>
                 </select>
+                <button type="submit" class="btn btn-primary">Wyświetl </button>
             </div>
-            <input type="submit" value="Wyświetl" />
         }
 
     </div>
@@ -102,28 +103,29 @@
                             <td> - </td>
                             <td> - </td>
                         }
-                        @if (i.Id_Condition == (int)HotelManagementApp.Models.ConditionOFHotelRooms.Available)
+                        else if (i.Id_Condition == (int)HotelManagementApp.Models.ConditionOFHotelRooms.Available)
                         {
-                            <td>@Html.ActionLink("Rezerwuj", "RentOrReserveRoom", "Home", new { id_HotelRoom = @i.Id_HotelRoom, typeOfTrans = 1 }, null)</td>
-                            <td>@Html.ActionLink("Wynajmij", "RentOrReserveRoom", "Home", new { id_HotelRoom = @i.Id_HotelRoom, typeOfTrans = 2 }, null)</td>
+                            <td>@Html.ActionLink("Rezerwuj", "RentOrReserveRoom", "Hotel", new { id_HotelRoom = @i.Id_HotelRoom, typeOfTrans = 1 }, null)</td>
+                            <td>@Html.ActionLink("Wynajmij", "RentOrReserveRoom", "Hotel", new { id_HotelRoom = @i.Id_HotelRoom, typeOfTrans = 2 }, null)</td>
                         }
-                        @if (i.Id_Condition == (int)HotelManagementApp.Models.ConditionOFHotelRooms.Reserved)
+                        else if (i.Id_Condition == (int)HotelManagementApp.Models.ConditionOFHotelRooms.Reserved)
                         {
-                            <td>@Html.ActionLink("Anuluj rezerwację", "CancellingRentOrReservationConfirm", "Home", new { IdRoom = @i.Id_HotelRoom, InDay = ViewBag.DayToShow == null ? DateTime.Now : ViewBag.DayToShow }, null) </td>
+                            <td>@Html.ActionLink("Anuluj rezerwację", "CancellingRentOrReservationConfirm", "Hotel", new { IdRoom = @i.Id_HotelRoom, InDay = ViewBag.DayToShow == null ? DateTime.Now : ViewBag.DayToShow }, null) </td>
                             <td> - </td>
                         }
-                        @if (i.Id_Condition == (int)HotelManagementApp.Models.ConditionOFHotelRooms.Rented)
+                        else if (i.Id_Condition == (int)HotelManagementApp.Models.ConditionOFHotelRooms.Rented)
                         {
-                            <td>@Html.ActionLink("Anuluj wynajęcie", "CancellingRentOrReservationConfirm", "Home", new { IdRoom = @i.Id_HotelRoom, InDay = ViewBag.DayToShow == null ? DateTime.Now : ViewBag.DayToShow }, null) </td>
+                            <td>@Html.ActionLink("Anuluj wynajęcie", "CancellingRentOrReservationConfirm", "Hotel", new { IdRoom = @i.Id_HotelRoom, InDay = ViewBag.DayToShow == null ? DateTime.Now : ViewBag.DayToShow }, null) </td>
                             <td> - </td>
                         }
-                        <td>@Html.ActionLink("Wyświetl dane pokoju", "RoomDetails", "Home", new { idRoom = @i.Id_HotelRoom }, null)</td>
+                        <td>@Html.ActionLink("Wyświetl dane pokoju", "RoomDetails", "Hotel", new { idRoom = @i.Id_HotelRoom }, null)</td>
                     </tr>
                 }
 
             </tbody>
         </table>
-        <button type="button" class="btn btn-secondary btn-lg"> @Html.ActionLink("Dodaj nowy pokój", "RoomCreate", "Home", null)</button>
+        <button type="button" class="btn btn-secondary btn-lg"> @Html.ActionLink("Dodaj nowy pokój", "RoomCreate", "Hotel", null)</button>
     </div>
+</div>
 </body>
 

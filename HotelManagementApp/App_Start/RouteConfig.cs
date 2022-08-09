@@ -16,7 +16,7 @@ namespace HotelManagementApp
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "LoginStart", id = UrlParameter.Optional }
+                defaults: new { controller = "Hotel", action = "LoginStart", id = UrlParameter.Optional }
             );
         }
     }

@@ -7,9 +7,9 @@
 
 <div class="container">
 
-    @using (Html.BeginForm("RegisterService", "Home", method: FormMethod.Post))
+    @using (Html.BeginForm("RegisterService", "Hotel", method: FormMethod.Post))
     {
-    <h2> Rejestrujesz usługę dla pokoju o nr: @ViewBag.Id_HotelRoom </h2>
+    <h2> Rejestrujesz usługę dla pokoju: @ViewBag.RoomName </h2>
 
         <input type="hidden" name="Id_HotelRoom" value="@ViewBag.Id_HotelRoom" />
 
@@ -32,10 +32,8 @@
             <label for="Comment">Komentarz: </label>
             <input type="text" class="form-control" name="Comment" required />
         </div>
-        <div class="text-center">
-            <div class="col-md-offset-2 col-md-10">
-                <input id="submit" type="submit" value="Wykonaj operację" class="btn btn-default" />
-            </div>
+        <div>
+             <button type="submit" class="btn btn-primary">Wykonaj operację </button>
         </div>
     }
 

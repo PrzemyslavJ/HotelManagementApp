@@ -52,9 +52,24 @@
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Ninject, Version=3.3.6.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.3.6\lib\net45\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Common, Version=3.3.2.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.Common.3.3.2\lib\net45\Ninject.Web.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Common.WebHost, Version=3.3.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.Common.WebHost.3.3.0\lib\net45\Ninject.Web.Common.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Mvc, Version=3.3.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.MVC5.3.3.0\lib\net45\Ninject.Web.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
@@ -110,6 +125,15 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Abstractions, Version=5.11.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.1\lib\net47\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.11.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.1\lib\net47\Unity.Container.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Mvc5, Version=1.4.0.0, Culture=neutral, PublicKeyToken=43da31bc42a85347, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Mvc5.1.4.0\lib\net45\Unity.Mvc5.dll</HintPath>
+    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
@@ -128,13 +152,14 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Clients.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="ConditionsOfHotelRooms.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HotelController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -165,13 +190,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\ClientData.cs" />
+    <Compile Include="Models\Model_Views\ClientData.cs" />
+    <Compile Include="Models\Logic_App_Clasess\GetHotelData.cs" />
+    <Compile Include="Models\Interfaces\IGetHotelData.cs" />
+    <Compile Include="Models\Interfaces\IRegisterServiceOrOperationEngine.cs" />
+    <Compile Include="Models\Interfaces\IRoomProperitiesOperations.cs" />
+    <Compile Include="Models\Interfaces\IRoomRentOrReservationEngine.cs" />
     <Compile Include="Models\KeyEnumsInProcessApp.cs" />
-    <Compile Include="Models\RegisterServiceOrOperation.cs" />
+    <Compile Include="Models\Model_Views\RegisterServiceOrOperation.cs" />
+    <Compile Include="Models\Logic_App_Clasess\RegisterServiceOrOperationEngine.cs" />
     <Compile Include="Models\ResultProcess.cs" />
-    <Compile Include="Models\RoomCreateModel.cs" />
-    <Compile Include="Models\RoomRentOrReservation.cs" />
-    <Compile Include="Models\TransUserViewModel.cs" />
+    <Compile Include="Models\Model_Views\RoomCreateModel.cs" />
+    <Compile Include="Models\Logic_App_Clasess\RoomProperitiesOperations.cs" />
+    <Compile Include="Models\Model_Views\RoomRentOrReservation.cs" />
+    <Compile Include="Models\Logic_App_Clasess\RoomRentOrReservationEngine.cs" />
+    <Compile Include="Models\Model_Views\TransUserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="sp_helpdiagramdefinition_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -208,8 +241,6 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <EntityDeploy Include="Model1.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Model1.Designer.cs</LastGenOutput>
@@ -217,7 +248,17 @@
     <Content Include="Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
@@ -239,34 +280,22 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\CommunicateView.cshtml" />
-    <Content Include="Views\Home\ConfirmationView.cshtml" />
-    <Content Include="Views\Home\LoginStart.cshtml" />
-    <Content Include="Views\Home\RegisterService.cshtml" />
-    <Content Include="Views\Home\RoomDetails.cshtml" />
-    <Content Include="Views\Home\Rooms.cshtml" />
-    <Content Include="Views\Home\Transactions.cshtml" />
-    <Content Include="Views\Home\RentOrReserveRoom.cshtml" />
-    <Content Include="Views\Home\Clients.cshtml" />
-    <Content Include="Views\Home\ClientDetails.cshtml" />
-    <Content Include="Views\Home\HotelLoggingUsers.cshtml" />
-    <Content Include="Views\Home\RoomCreate.cshtml" />
+    <Content Include="Views\Hotel\AppInformations.cshtml" />
+    <Content Include="Views\Hotel\CommunicateView.cshtml" />
+    <Content Include="Views\Hotel\ConfirmationView.cshtml" />
+    <Content Include="Views\Hotel\LoginStart.cshtml" />
+    <Content Include="Views\Hotel\RegisterService.cshtml" />
+    <Content Include="Views\Hotel\RoomDetails.cshtml" />
+    <Content Include="Views\Hotel\Rooms.cshtml" />
+    <Content Include="Views\Hotel\Transactions.cshtml" />
+    <Content Include="Views\Hotel\RentOrReserveRoom.cshtml" />
+    <Content Include="Views\Hotel\Clients.cshtml" />
+    <Content Include="Views\Hotel\ClientDetails.cshtml" />
+    <Content Include="Views\Hotel\HotelLoggingUsers.cshtml" />
+    <Content Include="Views\Hotel\RoomCreate.cshtml" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\bootstrap.min.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Content\bootstrap-theme.min.css.map" />
-    <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />

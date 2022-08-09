@@ -1,0 +1,135 @@
+﻿@model IEnumerable<HotelManagementApp.Models.TransUserViewModel>
+@{
+    ViewBag.Title = "Transakcje";
+}
+
+<div class="text-center">
+    <div class="row">
+        <div class="col">
+            <h2>Transakcje</h2>
+
+            <p></p>
+            <div class="container">
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Wyświetl określone transakcje
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                        <a class="dropdown-item" href="@Url.Action("AllTransactions")">Wszystkie transakcje</a>  <br />
+                        @foreach (var i in ViewBag.AllTypesTransToSelect)
+                        {
+                            <a class="dropdown-item" href="@Url.Action("AllTransactions", new { typeOfTrans = @i.Id_TypeTrans})">@i.Description</a> <br />
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <h3> Wyświetl transakcje w okresie czasu </h3>
+            @using (Html.BeginForm("TransactionsInPeriod", "Hotel", method: FormMethod.Get))
+            {
+                <div class="form-group">
+                    <label for="startTime">Data początkowa:  </label>
+                    <input type="datetime-local" id="startTime" name="startTime" required />
+                </div>
+                <div class="form-group">
+                    <label for="endTime">Data końcowa:  </label>
+                    <input type="datetime-local" id="endTime" name="endTime" required />
+                </div>
+                <div class="form-group">
+                    <label for="typeOfTrans">Wybierz typ transakcji  </label>
+                    <select id="typeOfTrans" name="typeOfTrans">
+                        <option value="">Wszystkie transakcje w okresie </option>
+                        @foreach (var i in ViewBag.AllTypesTransToSelect)
+                        {
+                            <option value="@i.Id_TypeTrans"> @i.Description </option>
+                        }
+                    </select>
+                    <button type="submit" class="btn btn-primary">Wyświetl </button>
+                </div>
+
+            }
+        </div>
+    </div>
+
+
+    <h3> @ViewBag.TypeTransDescription </h3>
+
+    <table class="table table-striped">
+        <thead>
+            <tr class="bg-info">
+                <th>Id transakcji </th>
+                <th>Typ transakcji </th>
+                <th>Zarejestrowana kwota </th>
+                <th>Opis</th>
+                <th>Okres od</th>
+                <th>Okres do </th>
+                <th>Dotyczy pokoju Nr</th>
+                <th>Pracownik rejestrujący </th>
+                <th>Data rejestracji </th>
+                <th>Status </th>
+                <th>Akcja </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var i in Model)
+            {
+            <tr>
+                <td>@i.Id_Trans</td>
+                <td>@i.TypeTransDesc</td>
+                <td>@i.Cost</td>
+                <td>@i.TransDesc</td>
+                <td>@i.FromTime</td>
+                <td>@i.ToTime</td>
+                <td>@Html.ActionLink(@i.NumberInUserHotel.ToString(), "RoomDetails", "Hotel", new { idRoom = @i.Id_HotelRoom }, null) </td>
+                <td>@i.SurnameLoggingUser</td>
+                <td>@i.CreatedRecordDateTime</td>
+                @if (i.IsActive == true)
+                {
+                    <td> aktywny </td>
+                }
+                else if (i.IsActive == false)
+                {
+                    <td> nieaktywny </td>
+                }
+                else
+                {
+                    <td>-</td>
+                }
+
+                @if (i.Id_TypeTrans == (int)HotelManagementApp.Models.TypeOfTrans.Reservation && i.IsActive == true && DateTime.Now < i.ToTime)
+                {
+                    <td>@Html.ActionLink("Anuluj rezerwację", "CancellingRentOrReservationConfirm", "Hotel", new { IdTrans = @i.Id_Trans }, null) </td>
+                }
+                else if (i.Id_TypeTrans == (int)HotelManagementApp.Models.TypeOfTrans.Rent && i.IsActive == true && DateTime.Now < i.ToTime)
+                {
+                    <td>@Html.ActionLink("Anuluj wynajęcie", "CancellingRentOrReservationConfirm", "Hotel", new { IdTrans = @i.Id_Trans }, null) </td>
+                }
+                else
+                {
+                    <td> - </td>
+                }
+            </tr>
+            }
+        </tbody>
+    </table>
+
+    @if(Model.Count() > 0)
+    {
+        <h4>Dla wskazanych transakcji w okresie przychód: @ViewBag.Revenue , rozchód: @ViewBag.Issue </h4>
+    }
+    else
+    {
+        <h4>Brak transakcji o wskazanych warunkach</h4>
+    }
+
+
+</div>
+
+<style>
+.dropdown {
+    display: inline-block;
+}
+</style>

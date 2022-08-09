@@ -9,11 +9,9 @@
 
 namespace HotelManagementApp
 {
-    using HotelManagementApp.Models;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-
+    
     public partial class HotelRooms
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -42,111 +40,5 @@ namespace HotelManagementApp
         public virtual ICollection<HotelRoomsFeatures> HotelRoomsFeatures { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Transactions> Transactions { get; set; }
-
-        public static IEnumerable<HotelRooms> roomsWithConditionForDay(DateTime dateTimeToResearch, int IdHotel)
-        {
-            HotelManagementDbContext hotelManagementDbEntities = new HotelManagementDbContext();
-
-            var RoomsInUserHotel = hotelManagementDbEntities.HotelRooms.Where(a => a.Id_UserHotel == IdHotel);
-
-            List<HotelRooms> allRoomWithCondition = new List<HotelRooms>();
-
-            foreach (HotelRooms i in RoomsInUserHotel)
-            {
-                var reserveTransForDay = hotelManagementDbEntities.Transactions.FirstOrDefault(a => a.Id_HotelRoom == i.Id_HotelRoom && a.Id_TypeTrans == (int)TypeOfTrans.Reservation
-                    && dateTimeToResearch >= a.FromTime && dateTimeToResearch <= a.ToTime && a.IsActive == true);
-
-                if (reserveTransForDay != null)
-                {
-                    allRoomWithCondition.Add(new HotelRooms() { Id_HotelRoom = i.Id_HotelRoom, Id_Condition = (int)ConditionOFHotelRooms.Reserved, NameOfRoom = i.NameOfRoom, Id_UserHotel = i.Id_UserHotel, CostOfRent = i.CostOfRent, OverallDescription = i.OverallDescription, OverallDescriptionAdditional = i.OverallDescriptionAdditional });
-                }
-                else
-                {
-                    var rentTransForDay = hotelManagementDbEntities.Transactions.
-                    FirstOrDefault(a => a.Id_HotelRoom == i.Id_HotelRoom && a.Id_TypeTrans == (int)TypeOfTrans.Rent
-                    && dateTimeToResearch >= a.FromTime && dateTimeToResearch <= a.ToTime && a.IsActive == true);
-
-                    if (rentTransForDay != null)
-                    {
-                        allRoomWithCondition.Add(new HotelRooms() { Id_HotelRoom = i.Id_HotelRoom, Id_Condition = (int)ConditionOFHotelRooms.Rented, NameOfRoom = i.NameOfRoom, Id_UserHotel = i.Id_UserHotel, CostOfRent = i.CostOfRent, OverallDescription = i.OverallDescription, OverallDescriptionAdditional = i.OverallDescriptionAdditional });
-                    }
-                    else
-                    {
-                        if (i.Id_Condition == (int)ConditionOFHotelRooms.Unavailable)
-                        {
-                            allRoomWithCondition.Add(new HotelRooms() { Id_HotelRoom = i.Id_HotelRoom, Id_Condition = (int)ConditionOFHotelRooms.Unavailable, NameOfRoom = i.NameOfRoom, Id_UserHotel = i.Id_UserHotel, CostOfRent = i.CostOfRent, OverallDescription = i.OverallDescription, OverallDescriptionAdditional = i.OverallDescriptionAdditional });
-                        }
-                        else
-                        {
-                            allRoomWithCondition.Add(new HotelRooms() { Id_HotelRoom = i.Id_HotelRoom, Id_Condition = (int)ConditionOFHotelRooms.Available, NameOfRoom = i.NameOfRoom, Id_UserHotel = i.Id_UserHotel, CostOfRent = i.CostOfRent, OverallDescription = i.OverallDescription, OverallDescriptionAdditional = i.OverallDescriptionAdditional });
-                        }
-                    }
-                }
-            }
-
-            return allRoomWithCondition;
-
-        }
-
-        public static void updatingRoomStatus(HotelManagementDbContext hotelManagementDbEntities)
-        {
-            //HotelManagementDbContext hotelManagementDbEntities = new HotelManagementDbContext();
-
-            var roomsNowToChangeStatus = from i in hotelManagementDbEntities.HotelRooms
-                                         join j in hotelManagementDbEntities.Transactions
-                                         on i.Id_HotelRoom equals j.Id_HotelRoom
-                                         where (j.Id_TypeTrans == (int)TypeOfTrans.Rent || j.Id_TypeTrans == (int)TypeOfTrans.Reservation)
-                                         && DateTime.Now >= j.FromTime && DateTime.Now <= j.ToTime && j.IsActive == true
-                                         select new { i.Id_HotelRoom, j.Id_TypeTrans };
-
-            var roomsNowToLossOfStatus = from i in hotelManagementDbEntities.HotelRooms
-                                         where (i.Id_Condition == (int)ConditionOFHotelRooms.Reserved || i.Id_Condition == (int)ConditionOFHotelRooms.Rented)
-                                         select i;
-
-            int counterOfLossStatus = 0;
-
-            foreach (var k in roomsNowToChangeStatus)
-            {
-                HotelRooms roomToChangeStatus = hotelManagementDbEntities.HotelRooms.Single(a => a.Id_HotelRoom == k.Id_HotelRoom);
-
-                if (k.Id_TypeTrans == (int)TypeOfTrans.Reservation)
-                {
-                    roomToChangeStatus.Id_Condition = (int)ConditionOFHotelRooms.Reserved;
-                }
-                else
-                {
-                    roomToChangeStatus.Id_Condition = (int)ConditionOFHotelRooms.Rented;
-                }
-            }
-
-            foreach (HotelRooms l in roomsNowToLossOfStatus)
-            {
-                Transactions roomToLossStatus;
-
-                if (l.Id_Condition == (int)ConditionOFHotelRooms.Reserved)
-                {
-                    roomToLossStatus = hotelManagementDbEntities.Transactions.
-                    FirstOrDefault(a => a.Id_HotelRoom == l.Id_HotelRoom && a.Id_TypeTrans == (int)TypeOfTrans.Reservation
-                    && DateTime.Now >= a.FromTime && DateTime.Now <= a.ToTime && a.IsActive == true);
-                }
-                else
-                {
-                    roomToLossStatus = hotelManagementDbEntities.Transactions.
-                    FirstOrDefault(a => a.Id_HotelRoom == l.Id_HotelRoom && a.Id_TypeTrans == (int)TypeOfTrans.Rent
-                    && DateTime.Now >= a.FromTime && DateTime.Now <= a.ToTime && a.IsActive == true);
-                }
-
-                if (roomToLossStatus == null)
-                {
-                    l.Id_Condition = (int)ConditionOFHotelRooms.Available;
-                    counterOfLossStatus++;
-                }
-            }
-
-            if (roomsNowToChangeStatus.Count() > 0 || counterOfLossStatus > 0)
-            {
-                hotelManagementDbEntities.SaveChanges();
-            }
-        }
     }
 }

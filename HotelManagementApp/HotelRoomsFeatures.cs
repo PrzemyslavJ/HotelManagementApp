@@ -19,18 +19,5 @@ namespace HotelManagementApp
         public string Description { get; set; }
     
         public virtual HotelRooms HotelRooms { get; set; }
-
-
-        public static void AddFeaturesRoom(string FeturesDesc, int IdRoom)
-        {
-            HotelManagementDbContext hotelManagementDbContext = new HotelManagementDbContext();
-            HotelRoomsFeatures hotelRoomsFeatures = new HotelRoomsFeatures()
-            {
-                Id_HotelRoom = IdRoom,
-                Description = FeturesDesc
-            };
-            hotelManagementDbContext.HotelRoomsFeatures.Add(hotelRoomsFeatures);
-            hotelManagementDbContext.SaveChanges();
-        }
     }
 }

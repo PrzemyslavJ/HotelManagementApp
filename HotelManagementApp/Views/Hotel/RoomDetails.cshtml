@@ -6,7 +6,7 @@
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 <div class="text-center">
-    <h2>Pokój nr: @Model.RoomDetails.Id_HotelRoom  @Model.RoomDetails.NameOfRoom </h2>
+    <h2>Pokój nr: @Model.RoomDetails.NumberInUserHotel  @Model.RoomDetails.NameOfRoom </h2>
 
     <ul class="list-group">
         <li class="list-group-item">Opis pokoju:  @Model.RoomDetails.OverallDescription </li>
@@ -20,19 +20,18 @@
 
         @if (@Model.RoomDetails.Id_Condition == (int)HotelManagementApp.Models.ConditionOFHotelRooms.Unavailable)
         {
-            <button type="button" class="btn btn-secondary btn-lg"> @Html.ActionLink("Zmiana stanu pokoju na dostępny", "ChangeRoomAvailabilityConfirm", "Home", new { idRoom = @Model.RoomDetails.Id_HotelRoom, statusChangeUp = true }, null)</button>
+            <button type="button" class="btn btn-secondary btn-lg"> @Html.ActionLink("Zmiana stanu pokoju na dostępny", "ChangeRoomAvailabilityConfirm", "Hotel", new { idRoom = @Model.RoomDetails.Id_HotelRoom, statusChangeUp = true }, null)</button>
         }
         else
         {
-            <button type="button" class="btn btn-secondary btn-lg"> @Html.ActionLink("Rezerwuj pokój", "RentOrReserveRoom", "Home", new { id_HotelRoom = @Model.RoomDetails.Id_HotelRoom, typeOfTrans = (int)HotelManagementApp.Models.TypeOfTrans.Reservation }, null)</button>
-            <button type="button" class="btn btn-secondary btn-lg"> @Html.ActionLink("Wynajmij pokój", "RentOrReserveRoom", "Home", new { id_HotelRoom = @Model.RoomDetails.Id_HotelRoom, typeOfTrans = (int)HotelManagementApp.Models.TypeOfTrans.Rent }, null)</button>
-            <button type="button" class="btn btn-secondary btn-lg"> @Html.ActionLink("Rejestruj usługę/operacje", "RegisterService", "Home", new { idRoom = @Model.RoomDetails.Id_HotelRoom }, null)</button>
-            <button type="button" class="btn btn-secondary btn-lg"> @Html.ActionLink("Zmiana stanu pokoju na niedostępny", "ChangeRoomAvailabilityConfirm", "Home", new { idRoom = @Model.RoomDetails.Id_HotelRoom, statusChangeUp = false }, null)</button>
+            <button type="button" class="btn btn-secondary btn-lg"> @Html.ActionLink("Rezerwuj pokój", "RentOrReserveRoom", "Hotel", new { id_HotelRoom = @Model.RoomDetails.Id_HotelRoom, typeOfTrans = (int)HotelManagementApp.Models.TypeOfTrans.Reservation }, null)</button>
+            <button type="button" class="btn btn-secondary btn-lg"> @Html.ActionLink("Wynajmij pokój", "RentOrReserveRoom", "Hotel", new { id_HotelRoom = @Model.RoomDetails.Id_HotelRoom, typeOfTrans = (int)HotelManagementApp.Models.TypeOfTrans.Rent }, null)</button>
+            <button type="button" class="btn btn-secondary btn-lg"> @Html.ActionLink("Rejestruj usługę/operacje", "RegisterService", "Hotel", new { idRoom = @Model.RoomDetails.Id_HotelRoom }, null)</button>
+            <button type="button" class="btn btn-secondary btn-lg"> @Html.ActionLink("Zmiana stanu pokoju na niedostępny", "ChangeRoomAvailabilityConfirm", "Hotel", new { idRoom = @Model.RoomDetails.Id_HotelRoom, statusChangeUp = false }, null)</button>
         }
     </div>
 
     <div class="text-center">
-
         <h3>Cechy pokoju: </h3>
         <div class="container">
             <ul>
@@ -42,18 +41,16 @@
                 }
             </ul>
         </div>
-        <button type="button" class="btn btn-secondary btn-lg" id="ShowAddingFeature">Dodaj cechę </button>
-        @using (Html.BeginForm("AddFeaturesToRoom", "Home", method: FormMethod.Post))
+        <button type="button" class="btn btn-secondary btn-lg" id="ShowAddingFeature">Dodaj cechę </button> <br/> <br/>
+        @using (Html.BeginForm("AddFeaturesToRoom", "Hotel", method: FormMethod.Post))
         {
             <div class="container" id="FormFeature" style="visibility:hidden;">
-                <input type="hidden" name="idRoomHotel" value="@Model.RoomDetails.Id_HotelRoom" />
-                <div class="form-group">
-                    <label for="Description">Opis cechy: </label>
-                    <input type="text" class="form-control" name="Description" required /> 
-                </div>
-                <div class="col-md-offset-2 col-md-10">
-                    <input id="submit" type="submit" value="Dodaj" class="btn btn-default" />
-                </div>
+            <input type="hidden" name="idRoomHotel" value="@Model.RoomDetails.Id_HotelRoom" />
+            <div class="form-group">
+                <label for="Description">Opis cechy: </label>
+                <input type="text" name="Description" required />
+                <button type="submit" class="btn btn-primary"> Dodaj </button>
+            </div>
             </div>
          }
     </div>
@@ -103,11 +100,11 @@
 
                 @if (i.Id_TypeTrans == (int)HotelManagementApp.Models.TypeOfTrans.Reservation && i.IsActive == true && DateTime.Now < i.ToTime)
                 {
-                    <td>@Html.ActionLink("Anuluj rezerwację", "CancellingRentOrReservationConfirm", "Home", new { IdTrans = @i.Id_Trans }, null) </td>
+                    <td>@Html.ActionLink("Anuluj rezerwację", "CancellingRentOrReservationConfirm", "Hotel", new { IdTrans = @i.Id_Trans }, null) </td>
                 }
                 else if (i.Id_TypeTrans == (int)HotelManagementApp.Models.TypeOfTrans.Rent && i.IsActive == true && DateTime.Now < i.ToTime)
                 {
-                    <td>@Html.ActionLink("Anuluj wynajęcie", "CancellingRentOrReservationConfirm", "Home", new { IdTrans = @i.Id_Trans }, null) </td>
+                    <td>@Html.ActionLink("Anuluj wynajęcie", "CancellingRentOrReservationConfirm", "Hotel", new { IdTrans = @i.Id_Trans }, null) </td>
                 }
                 else
                 {

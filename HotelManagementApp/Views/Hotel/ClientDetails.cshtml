@@ -38,16 +38,18 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (Transactions i in Model.ClientTransactions)
+        @foreach (var i in Model.ClientTransactions)
         {
         <tr>
-            <td>@i.Id_Trans</td>
-            <td>@i.Id_TypeTrans</td>
+            <td>@i.Id_Trans </td>
+            <td>@i.TypeTransDesc</td>
             <td>@i.Cost</td>
-            <td>@i.Description</td>
+            <td>@i.TransDesc</td>
             <td>@i.FromTime</td>
             <td>@i.ToTime</td>
-            <td>@i.Id_LoggingUser</td>
+            <td>@i.SurnameLoggingUser</td>
+            <td>@i.CreatedRecordDateTime</td>
+
             @if (i.IsActive == true)
             {
                 <td> aktywny </td>
@@ -60,8 +62,19 @@
             {
                 <td>-</td>
             }
-            <td>@i.CreatedRecordDateTime</td>
 
+            @if (i.Id_TypeTrans == (int)HotelManagementApp.Models.TypeOfTrans.Reservation && i.IsActive == true && DateTime.Now < i.ToTime)
+            {
+                <td>@Html.ActionLink("Anuluj rezerwację", "CancellingRentOrReservationConfirm", "Hotel", new { IdTrans = @i.Id_Trans }, null) </td>
+            }
+            else if (i.Id_TypeTrans == (int)HotelManagementApp.Models.TypeOfTrans.Rent && i.IsActive == true && DateTime.Now < i.ToTime)
+            {
+                <td>@Html.ActionLink("Anuluj wynajęcie", "CancellingRentOrReservationConfirm", "Hotel", new { IdTrans = @i.Id_Trans }, null) </td>
+            }
+            else
+            {
+                <td> - </td>
+            }
         </tr>
         }
     </tbody>

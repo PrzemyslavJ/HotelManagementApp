@@ -9,11 +9,9 @@
 
 namespace HotelManagementApp
 {
-    using HotelManagementApp.Models;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-
+    
     public partial class Transactions
     {
         public int Id_Trans { get; set; }
@@ -33,102 +31,5 @@ namespace HotelManagementApp
         public virtual HotelRooms HotelRooms { get; set; }
         public virtual LoggingUsers LoggingUsers { get; set; }
         public virtual TypesTrans TypesTrans { get; set; }
-        
-
-        public static IEnumerable<Transactions> GetAllHotelTransactions(HotelManagementDbContext hotelManagementDbEntities, int IdHotel)
-        {
-            var hotelTrans = from i in hotelManagementDbEntities.Transactions
-                             join j in hotelManagementDbEntities.HotelRooms
-                             on i.Id_HotelRoom equals j.Id_HotelRoom
-                             where j.Id_UserHotel == IdHotel
-                             orderby i.Id_Trans descending
-                             select i;
-
-            return hotelTrans;
-        }
-
-        public static double [] GetTransRevenueAndIssue(HotelManagementDbContext hotelManagementDbEntities, IEnumerable<Transactions> trans)
-        {
-            double[] RevenueAndIssue = new double[2] { 0, 0 };
-
-
-            var transRevenue = from i in trans
-                               join j in hotelManagementDbEntities.TypesTrans on i.Id_TypeTrans equals j.Id_TypeTrans
-                                    where j.IsRevenue == true
-                               select new { i.Cost };
-
-            var transIssue = from i in trans
-                               join j in hotelManagementDbEntities.TypesTrans on i.Id_TypeTrans equals j.Id_TypeTrans
-                               where j.IsRevenue == false
-                               select new { i.Cost };
-
-            foreach (var i in transRevenue)
-            {
-                RevenueAndIssue[0] += (double)i.Cost;
-            }
-
-            foreach (var i in transIssue)
-            {
-                RevenueAndIssue[1] += (double)i.Cost;
-            }
-
-            return RevenueAndIssue;
-        }
-
-        public static void RoomStatusChangeUpOrDown(int IdLoggingUser, int IdRoom, bool StatusChangeUp = false)
-        {
-            HotelManagementDbContext hotelManagementDbEntities = new HotelManagementDbContext();
-            HotelRooms hotelRooms = hotelManagementDbEntities.HotelRooms.SingleOrDefault(a => a.Id_HotelRoom == IdRoom);
-            Transactions newTransaction = new Transactions();
-
-            newTransaction.Id_LoggingUser = IdLoggingUser;
-            newTransaction.Id_HotelRoom = IdRoom;
-            newTransaction.FromTime = DateTime.Now;
-            newTransaction.ToTime = DateTime.Now;
-            newTransaction.CreatedRecordDateTime = DateTime.Now;
-
-            if (StatusChangeUp)
-            {
-                hotelRooms.Id_Condition = (int)ConditionOFHotelRooms.Available;
-                newTransaction.Id_TypeTrans = (int)TypeOfTrans.ChangeToAvailable;
-            }
-            else
-            {
-                hotelRooms.Id_Condition = (int)ConditionOFHotelRooms.Unavailable;
-                newTransaction.Id_TypeTrans = (int)TypeOfTrans.ChangeToUnavailable;
-            }
-            hotelManagementDbEntities.Transactions.Add(newTransaction);
-            hotelManagementDbEntities.SaveChanges();
-        }
-
-        public static void CancellingRentOrReservation(int IdLoggingUser, int IdTransToCancel)
-        {
-            HotelManagementDbContext hotelManagementDbEntities = new HotelManagementDbContext();
-            Transactions transToCancel = hotelManagementDbEntities.Transactions.FirstOrDefault(a => a.Id_Trans == IdTransToCancel);
-
-            transToCancel.IsActive = false;
-            hotelManagementDbEntities.SaveChanges();
-
-            Transactions newTransaction = new Transactions();
-
-            newTransaction.Id_HotelRoom = transToCancel.Id_HotelRoom;
-            newTransaction.CreatedRecordDateTime = DateTime.Now;
-            newTransaction.Id_thisRef = transToCancel.Id_Trans;
-            newTransaction.Id_LoggingUser = IdLoggingUser;
-            newTransaction.Cost = 0;
-            newTransaction.FromTime = transToCancel.FromTime;
-            newTransaction.ToTime = transToCancel.ToTime;
-
-            if (transToCancel.Id_TypeTrans == (int)TypeOfTrans.Reservation)
-            {
-                newTransaction.Id_TypeTrans = (int)TypeOfTrans.CancellingReservation;
-            }
-            else if (transToCancel.Id_TypeTrans == (int)TypeOfTrans.Rent)
-            {
-                newTransaction.Id_TypeTrans = (int)TypeOfTrans.CancellinfOfent;
-            }
-            hotelManagementDbEntities.Transactions.Add(newTransaction);
-            hotelManagementDbEntities.SaveChanges();
-        }
     }
 }
