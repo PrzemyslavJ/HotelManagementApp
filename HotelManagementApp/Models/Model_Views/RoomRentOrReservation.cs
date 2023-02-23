@@ -28,9 +28,5 @@ namespace HotelManagementApp.Models
         public int Id_TypeOfTrans { get; set; }
 
         public bool OverWriteClientData { get; set; }
-
-        // powinna być lista klientów przyporządkowanych do operacji rezerwacji lub wynajecia pokoju
-        //public List<Clients> clientsInReservation { get; set; }
-        // narazie robie do pojedyńczego klienta poprzez dziedziczenie pol z klasy Clients
     }
 }

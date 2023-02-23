@@ -55,7 +55,7 @@ namespace HotelManagementApp.Models
                     && DateTime.Now >= a.FromTime && DateTime.Now <= a.ToTime && a.IsActive == true);
                 }
 
-                if (roomToLossStatus == null)
+                if (roomToLossStatus == null && l.Id_Condition != (int)ConditionOFHotelRooms.Unavailable )
                 {
                     l.Id_Condition = (int)ConditionOFHotelRooms.Available;
                     counterOfLossStatus++;
@@ -68,7 +68,7 @@ namespace HotelManagementApp.Models
             }
         }
 
-
+        
         public void RoomStatusChangeUpOrDown(int idLoggingUser, int idRoom, bool StatusChangeUp = false)
         {
             HotelRooms hotelRooms = hotelManagementDbEntities.HotelRooms.SingleOrDefault(a => a.Id_HotelRoom == idRoom);
@@ -76,6 +76,7 @@ namespace HotelManagementApp.Models
             {
                 Id_LoggingUser = idLoggingUser,
                 Id_HotelRoom = idRoom,
+                Cost = 0,
                 FromTime = DateTime.Now,
                 ToTime = DateTime.Now,
                 CreatedRecordDateTime = DateTime.Now
@@ -90,6 +91,13 @@ namespace HotelManagementApp.Models
             {
                 hotelRooms.Id_Condition = (int)ConditionOFHotelRooms.Unavailable;
                 newTransaction.Id_TypeTrans = (int)TypeOfTrans.ChangeToUnavailable;
+
+                var unavailableRoomTransactions = hotelManagementDbEntities.Transactions.Where(a => a.Id_HotelRoom == idRoom && a.ToTime >= DateTime.Now);
+
+                foreach (var i in unavailableRoomTransactions)
+                {
+                    i.IsActive = false;
+                }
             }
             hotelManagementDbEntities.Transactions.Add(newTransaction);
             hotelManagementDbEntities.SaveChanges();
@@ -123,7 +131,6 @@ namespace HotelManagementApp.Models
                 CreatedRecordDateTime = DateTime.Now
             };
             hotelManagementDbEntities.Transactions.Add(newTransaction);
-
             hotelManagementDbEntities.SaveChanges();
         }
 

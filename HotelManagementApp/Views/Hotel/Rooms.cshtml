@@ -84,7 +84,7 @@
                                 <td>Niedostępny</td>
                                 break;
                             case 2:
-                                <td>Wolny</td>
+                                <td>Dostępny</td>
                                 break;
                             case 3:
                                 <td>Zarezerwowany</td>
@@ -105,8 +105,8 @@
                         }
                         else if (i.Id_Condition == (int)HotelManagementApp.Models.ConditionOFHotelRooms.Available)
                         {
-                            <td>@Html.ActionLink("Rezerwuj", "RentOrReserveRoom", "Hotel", new { id_HotelRoom = @i.Id_HotelRoom, typeOfTrans = 1 }, null)</td>
-                            <td>@Html.ActionLink("Wynajmij", "RentOrReserveRoom", "Hotel", new { id_HotelRoom = @i.Id_HotelRoom, typeOfTrans = 2 }, null)</td>
+                            <td>@Html.ActionLink("Rezerwuj", "RentOrReserveRoom", "Hotel", new { id_HotelRoom = @i.Id_HotelRoom, typeOfTrans = (int)HotelManagementApp.Models.TypeOfTrans.Reservation }, null)</td>
+                            <td>@Html.ActionLink("Wynajmij", "RentOrReserveRoom", "Hotel", new { id_HotelRoom = @i.Id_HotelRoom, typeOfTrans = (int)HotelManagementApp.Models.TypeOfTrans.Rent }, null)</td>
                         }
                         else if (i.Id_Condition == (int)HotelManagementApp.Models.ConditionOFHotelRooms.Reserved)
                         {

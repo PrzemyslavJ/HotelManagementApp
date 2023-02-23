@@ -13,17 +13,20 @@ namespace HotelMenApp.Controllers
 {
     public class HotelController : Controller
     {
-        private IRegisterServiceOrOperationEngine registerServiceOrOperation;
-        private IGetHotelData getHotelData;
-        private IRoomRentOrReservationEngine roomRentOrReservation;
-        private IRoomProperitiesOperations roomProperitiesOperations;
+        private IRegisterServiceOrOperationEngine   registerServiceOrOperation;
+        private IGetHotelAdvancedData               getHotelData;
+        private IRoomRentOrReservationEngine        roomRentOrReservation;
+        private IRoomProperitiesOperations          roomProperitiesOperations;
 
-        public HotelController(IRegisterServiceOrOperationEngine registerServiceOrOperationEngine, IGetHotelData getHotelDatas, IRoomRentOrReservationEngine roomRentOrReservationEngine, IRoomProperitiesOperations RoomOnProperitiesOperations)
+        public HotelController(IRegisterServiceOrOperationEngine registerServiceOrOperationEngine, 
+                               IGetHotelAdvancedData getHotelDatas, 
+                               IRoomRentOrReservationEngine roomRentOrReservationEngine, 
+                               IRoomProperitiesOperations RoomOnProperitiesOperations)
         {
-            this.registerServiceOrOperation = registerServiceOrOperationEngine;
-            this.getHotelData = getHotelDatas;
-            this.roomRentOrReservation = roomRentOrReservationEngine;
-            this.roomProperitiesOperations = RoomOnProperitiesOperations;
+            registerServiceOrOperation = registerServiceOrOperationEngine;
+            getHotelData = getHotelDatas;
+            roomRentOrReservation = roomRentOrReservationEngine;
+            roomProperitiesOperations = RoomOnProperitiesOperations;
 
             roomProperitiesOperations.UpdatingRoomNowStatus();
         }
@@ -105,17 +108,17 @@ namespace HotelMenApp.Controllers
         }
 
         [HttpGet]
-        public ActionResult RentOrReserveRoom(int? id_HotelRoom, int? typeOfTrans,string communicate = "")
+        public ActionResult RentOrReserveRoom(int? id_HotelRoom, int? typeOfTrans, string communicate = "")
         {
             var roomToReserveOrRent = getHotelData.getHotelDb().HotelRooms.FirstOrDefault(a => a.Id_HotelRoom == id_HotelRoom);
             ViewBag.TypeOfTrans = typeOfTrans;
-            ViewBag.RoomName = roomToReserveOrRent.NameOfRoom +" , numer pokoju "+ roomToReserveOrRent.NumberInUserHotel;
-            if(communicate!="")
+            ViewBag.Id_HotelRoom = id_HotelRoom;
+            ViewBag.RoomName = roomToReserveOrRent.NameOfRoom + " , numer pokoju " + roomToReserveOrRent.NumberInUserHotel;
+            if (communicate != "")
             {
                 ViewBag.ErrorCommunicate = communicate;
             }
             return View("RentOrReserveRoom");
-
         }
 
         [HttpPost]
@@ -123,7 +126,7 @@ namespace HotelMenApp.Controllers
         {
             ResultProcess resultProcess;
 
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 resultProcess = roomRentOrReservation.ProcessRentOrReservaiotnRegisterTrans(roomRentOrReservationData, (int)Session["Id_LoggingUser"]);
 
@@ -139,10 +142,11 @@ namespace HotelMenApp.Controllers
             }
             else
             {
-                return RedirectToAction("RentOrReserveRoom", new { id_HotelRoom = roomRentOrReservationData.Id_HotelRoom, typeOfTrans = roomRentOrReservationData.Id_TypeOfTrans,communicate = "Wypełnij wszystkie dane prawidłowo !" });
+                return RedirectToAction("RentOrReserveRoom", new { id_HotelRoom = roomRentOrReservationData.Id_HotelRoom, typeOfTrans = roomRentOrReservationData.Id_TypeOfTrans, communicate = "Wypełnij wszystkie dane prawidłowo !" });
             }
         }
 
+        [HttpGet]
         public ActionResult AllTransactions(int? typeOfTrans)
         {
             double[] RevenueAndIssue = new double[2];
@@ -197,7 +201,7 @@ namespace HotelMenApp.Controllers
                 ViewBag.Issue = RevenueAndIssue[1];
                 var transInPeriodWithConditionView = getHotelData.GetTransactionsUserView(transInPeriodWithConditionRaw).ToList();
                 TypesTrans typeTransDescription = getHotelData.getHotelDb().TypesTrans.SingleOrDefault(a => a.Id_TypeTrans == typeOfTrans);
-                ViewBag.TypeTransDescription = "Transakcje o typie "+ typeTransDescription.Description + " w okresie od: " + startTime + " do: " + endTime;
+                ViewBag.TypeTransDescription = "Transakcje o typie " + typeTransDescription.Description + " w okresie od: " + startTime + " do: " + endTime;
                 return View("Transactions", transInPeriodWithConditionView);
             }
         }
@@ -207,16 +211,18 @@ namespace HotelMenApp.Controllers
         {
             dynamic allRoomData = new ExpandoObject();
             var roomTransRaw = getHotelData.getHotelDb().Transactions.Where(a => a.Id_HotelRoom == idRoom).OrderByDescending(a => a.Id_Trans);
-        
+            int conditionRoomRaw = getHotelData.getHotelDb().HotelRooms.FirstOrDefault(a => a.Id_HotelRoom == idRoom).Id_Condition;
+
             allRoomData.RoomDetails = getHotelData.getHotelDb().HotelRooms.SingleOrDefault(a => a.Id_HotelRoom == idRoom);
             allRoomData.RoomTransactions = getHotelData.GetTransactionsUserView(roomTransRaw).ToList();
             allRoomData.RoomFeatures = getHotelData.getHotelDb().HotelRoomsFeatures.Where(a => a.Id_HotelRoom == idRoom);
-       
+            allRoomData.RoomConditionDescription = getHotelData.getHotelDb().ConditionsOfHotelRooms.SingleOrDefault(a => a.Id_Condition == conditionRoomRaw);
+
             return View("RoomDetails", allRoomData);
         }
 
         [HttpPost]
-        public ActionResult AddFeaturesToRoom(string Description,int? idRoomHotel)
+        public ActionResult AddFeaturesToRoom(string Description, int? idRoomHotel)
         {
             roomProperitiesOperations.AddFeaturesRoom(Description, (int)idRoomHotel);
             return RedirectToAction("RoomDetails", new { idRoom = idRoomHotel });
@@ -224,15 +230,15 @@ namespace HotelMenApp.Controllers
 
 
         [HttpGet]
-        public ActionResult RegisterService(int? idRoom,string communicate = "")
+        public ActionResult RegisterService(int? idRoom, string communicate = "")
         {
             var OperationsToSelect = getHotelData.getHotelDb().TypesTrans.Where(a => a.Id_TypeTrans > (int)TypeOfTrans.CancellinfOfent);
             var roomToService = getHotelData.getHotelDb().HotelRooms.FirstOrDefault(a => a.Id_HotelRoom == idRoom);
             ViewBag.Id_HotelRoom = idRoom;
-            ViewBag.RoomName = roomToService.NameOfRoom + " , numer pokoju "+ roomToService.NumberInUserHotel;
+            ViewBag.RoomName = roomToService.NameOfRoom + " , numer pokoju " + roomToService.NumberInUserHotel;
             ViewBag.OperationsToList = new SelectList(OperationsToSelect, "Id_TypeTrans", "Description");
 
-            if(communicate != "")
+            if (communicate != "")
             {
                 ViewBag.ErrorCommunicate = communicate;
             }
@@ -256,7 +262,7 @@ namespace HotelMenApp.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("RegisterService", new { idRoom = registerData.Id_HotelRoom,communicate = resultProcess.TextCommunicate });
+                    return RedirectToAction("RegisterService", new { idRoom = registerData.Id_HotelRoom, communicate = resultProcess.TextCommunicate });
                 }
             }
             else
@@ -271,11 +277,11 @@ namespace HotelMenApp.Controllers
         {
             if (statusChangeUp)
             {
-                ViewBag.ConfirmCommunicate = "Operacja umożliwi wykonywanie transakcji związanych z pokojem. Czy chcesz kontynuować ?";
+                ViewBag.ConfirmCommunicate = "Zmieniasz stan pokoju na dostępny. Operacja umożliwi wykonywanie wszystkich transakcji związanych z pokojem. Czy chcesz kontynuować ?";
             }
             else
             {
-                ViewBag.ConfirmCommunicate = "Czy napewno chcesz zmienić status pokoju na niedostępny ? Trnasakcje na pokoju nie będą możliwe. Czy chcesz kontynuować ?";
+                ViewBag.ConfirmCommunicate = "Czy napewno chcesz zmienić status pokoju na niedostępny ? Transakcje na pokoju nie będą możliwe. Obecne transakcje dla pokoju zostaną anulowane. Czy chcesz kontynuować ?";
             }
 
             ViewBag.ControllerMethod = "ChangeRoomAvailabilityConfirm";
@@ -360,7 +366,7 @@ namespace HotelMenApp.Controllers
         [HttpGet]
         public JsonResult GetSelectClientData(string jsonInputPersonalNumber)
         {
-            ClientData clientData = getHotelData.GetSelectClientDataFromJson(jsonInputPersonalNumber);
+            ClientData clientData = getHotelData.GetSelectClientDataFromJson(jsonInputPersonalNumber, (int)Session["Id_UserHotel"]);
             return Json(clientData, JsonRequestBehavior.AllowGet);
         }
 
@@ -373,9 +379,9 @@ namespace HotelMenApp.Controllers
         [HttpPost]
         public ActionResult RoomCreate(RoomCreateModel roomCreateModel)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                roomProperitiesOperations.CreateNewRoom(roomCreateModel, (int)Session["Id_UserHotel"],(int)Session["Id_LoggingUser"]);
+                roomProperitiesOperations.CreateNewRoom(roomCreateModel, (int)Session["Id_UserHotel"], (int)Session["Id_LoggingUser"]);
                 return RedirectToAction("Rooms");
             }
             else
@@ -388,13 +394,14 @@ namespace HotelMenApp.Controllers
 
         public void CheckSessionUser()
         {
-            if(Session["Login"] == null)
+            if (Session["Login"] == null)
             {
                 RedirectToAction("LoginStart");
             }
         }
 
         public ActionResult AppInformations()
+
         {
             return View();
         }

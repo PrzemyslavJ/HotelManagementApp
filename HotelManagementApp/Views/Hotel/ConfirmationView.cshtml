@@ -16,11 +16,9 @@
                     <input type="hidden" name="idRoom" value="@ViewBag.IdRoom" />
                     <input type="hidden" name="statusChangeUp" value="@ViewBag.StatusChangeUp.ToString()" />
 
-                    <div class="text-center">
-                        <div class="col-md-offset-2 col-md-10">
+                        <div>
                             <input id="submit" type="submit" value="Potwierdzam" class="btn btn-secondary btn-lg" />
                         </div>
-                    </div>
                 }
                 break;
             case "CancellingRentOrReservationConfirm":
@@ -32,18 +30,15 @@
                     <p> @ViewBag.TypeTrans pokoju: @ViewBag.RoomName  </p>
                     <p>w okresie od: @ViewBag.FromTime  do: @ViewBag.ToTime  </p>
 
-                    <div class="text-center">
-                        <div class="col-md-offset-2 col-md-10">
+                        <div>
                             <input id="submit" type="submit" value="Potwierdzam" class="btn btn-primary btn-lg" />
                         </div>
-                    </div>
                 }
                 break;
         }
         <br>
-        <br>
     }
-
+    <br />
     @Html.ActionLink("Powrót na panel pokojów hotelowych", "Rooms", "Home", null)
 
 </div>

@@ -152,7 +152,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\UnityConfig.cs" />
+    <Compile Include="App_Start\UnityDependencesConfig.cs" />
     <Compile Include="Clients.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -191,8 +191,8 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Model_Views\ClientData.cs" />
-    <Compile Include="Models\Logic_App_Clasess\GetHotelData.cs" />
-    <Compile Include="Models\Interfaces\IGetHotelData.cs" />
+    <Compile Include="Models\Logic_App_Clasess\GetHotelAdvancedData.cs" />
+    <Compile Include="Models\Interfaces\IGetHotelAdvancedData.cs" />
     <Compile Include="Models\Interfaces\IRegisterServiceOrOperationEngine.cs" />
     <Compile Include="Models\Interfaces\IRoomProperitiesOperations.cs" />
     <Compile Include="Models\Interfaces\IRoomRentOrReservationEngine.cs" />

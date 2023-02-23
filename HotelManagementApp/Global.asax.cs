@@ -17,7 +17,11 @@ namespace HotelManagementApp
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            UnityConfig.RegisterComponents();
+            UnityDependencesConfig.RegisterDependences();
+        }
+        protected void Session_End()
+        {
+            HttpContext.Current.Response.Redirect("~/Hotel/LoginStart");
         }
     }
 }

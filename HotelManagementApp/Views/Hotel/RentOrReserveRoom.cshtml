@@ -30,87 +30,86 @@
             <input type="datetime-local" class="form-control" name="FromDateTime" required /> <br />
         </div>
         <div class="form-group">
-            <label for="ToDateTime">Data końcowa: </label> 
+            <label for="ToDateTime">Data końcowa: </label>
             <input type="datetime-local" class="form-control" name="ToDateTime" required /> <br />
         </div>
         <div class="form-group">
-            <label for="CostOfReservation">Wprowadzona kwota przez klienta: </label> <br/>
+            <label for="CostOfReservation">Wprowadzona kwota przez klienta: </label> <br />
             @Html.EditorFor(m => m.CostOfOperation) <br />
             @Html.ValidationMessageFor(m => m.CostOfOperation, "", new { @class = "text-danger" })
         </div>
         <div class="form-group">
-            <label for="Comment">Komentarz do operacji: </label> <br/>
+            <label for="Comment">Komentarz do operacji: </label> <br />
             @Html.EditorFor(m => m.Comment)
         </div>
         <div class="text-center">
             <h2>Dane głównego klienta </h2>
-            <br/>
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        <label for="PersonalNum">Nr dowodu osobistego: </label> <br />
-                        @Html.EditorFor(m => m.PersonalNum)
-                        @Html.ValidationMessageFor(m => m.PersonalNum, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="form-group">
-                        <label for="Surname">Nazwisko: </label> <br />
-                        @Html.EditorFor(m => m.Surname)
-                        @Html.ValidationMessageFor(m => m.Surname, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="form-group">
-                        <label for="Name">Imię: </label>  <br />
-                        @Html.EditorFor(m => m.Name)
-                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="form-group">
-                        <label for="Telephone">Telefon: </label>  <br />
-                        @Html.EditorFor(m => m.Telephone)
-                        @Html.ValidationMessageFor(m => m.Telephone, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="form-group">
-                        <label for="Email">Email: </label>  <br />
-                        @Html.EditorFor(m => m.Email)
-                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        <label for="City">Miasto: </label>  <br />
-                        @Html.EditorFor(m => m.City)
-                        @Html.ValidationMessageFor(m => m.City, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="form-group">
-                        <label for="PostalCode">Kod pocztowy: </label>  <br />
-                        @Html.EditorFor(m => m.PostalCode)
-                        @Html.ValidationMessageFor(m => m.PostalCode, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="form-group">
-                        <label for="Street">Ulica: </label>  <br />
-                        @Html.EditorFor(m => m.Street)
-                        @Html.ValidationMessageFor(m => m.Street, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="form-group">
-                        <label for="BuildingNumber">Nr Budynku: </label>  <br />
-                        @Html.EditorFor(m => m.BuildingNumber)
-                        @Html.ValidationMessageFor(m => m.BuildingNumber, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="form-group">
-                        <label for="FlatNumber">Nr mieszkania: </label>  <br />
-                        @Html.EditorFor(m => m.FlatNumber)
-                        @Html.ValidationMessageFor(m => m.FlatNumber, "", new { @class = "text-danger" })
-                    </div>
-                  </div>
+            <br />
+            <!--  <div class="row"> -->
+            <!-- <div class="col-lg-6"> -->
+            <div class="form-group">
+                <label for="PersonalNum">Nr dowodu osobistego: </label> <br />
+                @Html.EditorFor(m => m.PersonalNum)
+                @Html.ValidationMessageFor(m => m.PersonalNum, "", new { @class = "text-danger" })
             </div>
-            <div class="form-group" id="OverWriteClient" style="visibility:hidden;">
-                <label for="OverWriteClientData">Klient już jest zarejestrowany w systemie. Czy zaktualizować jego dane ? </label>
-                <input type="checkbox" name="OverWriteClientData" id="OverWriteClientData" value="false">
+            <div class="form-group">
+                <label for="Surname">Nazwisko: </label> <br />
+                @Html.EditorFor(m => m.Surname)
+                @Html.ValidationMessageFor(m => m.Surname, "", new { @class = "text-danger" })
             </div>
-            
-            <div class="text-center">
-                <button type="submit" class="btn btn-primary"> Wykonaj operację </button>
+            <div class="form-group">
+                <label for="Name">Imię: </label>  <br />
+                @Html.EditorFor(m => m.Name)
+                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
             </div>
+            <div class="form-group">
+                <label for="Telephone">Telefon: </label>  <br />
+                @Html.EditorFor(m => m.Telephone)
+                @Html.ValidationMessageFor(m => m.Telephone, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label for="Email">Email: </label>  <br />
+                @Html.EditorFor(m => m.Email)
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+            </div>
+        <!--</div> -->
+        <!-- <div class="col-lg-6">-->
+        <div class="form-group">
+            <label for="City">Miasto: </label>  <br />
+            @Html.EditorFor(m => m.City)
+            @Html.ValidationMessageFor(m => m.City, "", new { @class = "text-danger" })
         </div>
-        
+        <div class="form-group">
+            <label for="PostalCode">Kod pocztowy: </label>  <br />
+            @Html.EditorFor(m => m.PostalCode)
+            @Html.ValidationMessageFor(m => m.PostalCode, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <label for="Street">Ulica: </label>  <br />
+            @Html.EditorFor(m => m.Street)
+            @Html.ValidationMessageFor(m => m.Street, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <label for="BuildingNumber">Nr Budynku: </label>  <br />
+            @Html.EditorFor(m => m.BuildingNumber)
+            @Html.ValidationMessageFor(m => m.BuildingNumber, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <label for="FlatNumber">Nr mieszkania: </label>  <br />
+            @Html.EditorFor(m => m.FlatNumber)
+            @Html.ValidationMessageFor(m => m.FlatNumber, "", new { @class = "text-danger" })
+        </div>
+        <!--   </div>-->
+       <!-- </div> -->
+        <div class="form-group" id="OverWriteClient" style="visibility:hidden;">
+            <label for="OverWriteClientData">Klient już jest zarejestrowany w systemie. Czy zaktualizować jego dane ? </label>
+            <input type="checkbox" name="OverWriteClientData" id="OverWriteClientData" value="false">
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary"> Wykonaj operację </button>
+        </div>
+        </div>
+
     }
 </body>
 

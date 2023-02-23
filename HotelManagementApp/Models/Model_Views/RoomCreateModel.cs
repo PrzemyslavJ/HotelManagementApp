@@ -11,10 +11,11 @@ namespace HotelManagementApp.Models
         public Nullable<int> NumberInUserHotel { get; set; }
 
         [Required]
+        [Display(Name = "Nazwa pokoju")]
         public string NameOfRoom { get; set; }
 
         [Display(Name = "Kwota")]
-        [Range(0, 10000, ErrorMessage = "Kwota nie może być mniejsza od 0")]
+        [Range(0, 1000000, ErrorMessage = "Kwota nie może być mniejsza od 0")]
         public double CostOfRent { get; set; }
         public string OverallDescription { get; set; }
         public string OverallDescriptionAdditional { get; set; }
